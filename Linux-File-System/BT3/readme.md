@@ -23,6 +23,10 @@ To compile the program, use:
 ```sh
 make all
 ```
+or
+```sh
+gcc -o bin/main src/main.c
+```
 This will generate the executable `bin/main`.
 
 ## Usage

@@ -21,7 +21,7 @@ This C program performs file operations such as creating, reading, and writing b
 ## Compilation
 To compile the program, use:
 ```sh
-gcc -o bin/main src/main.c
+make all
 ```
 This will generate the executable `bin/main`.
 

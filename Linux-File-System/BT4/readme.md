@@ -74,6 +74,3 @@ The program outputs metadata details for the specified file:
 - File size is displayed in bytes.
 - Timestamps are formatted using `ctime()` for readability.
 
-## License
-This project is open-source and free to use under the MIT License.
-

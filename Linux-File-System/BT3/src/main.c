@@ -64,6 +64,8 @@ int main(int argc, char **argv)
     {
         printf("\n[ERROR]: [r/w] Option is invalid, current input: %s", argv[3]);
     }
+    
+    close(fd);
 
     return 0;
 }

@@ -26,6 +26,8 @@ MAIN_SRC := $(MAIN_SRC:%=$(OBJ_DIR)/%.o)
 
 # Default target
 all: build_obj build_static_lib build_dynamic_lib
+	gcc $(OBJ_DIR)/main.o $(SHARED_DIR)/libhello.so -o $(BIN_DIR)/shared_libs
+	gcc $(OBJ_DIR)/main.o -L$(STATIC_DIR) -lhello -o $(BIN_DIR)/static_libs
 
 # Rule to create object files
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
@@ -36,11 +38,11 @@ build_obj: $(OBJ_FILES)
 
 # Rule to create static lib
 build_static_lib:
-	ar rcs $(STATIC_DIR)/use-static-library.a $(filter-out $(MAIN_SRC),$(OBJ_FILES))
+	ar rcs $(STATIC_DIR)/libhello.a $(filter-out $(MAIN_SRC),$(OBJ_FILES))
 
 # Rule to create shared lib
 build_dynamic_lib:
-	gcc -shared $(filter-out $(MAIN_SRC),$(OBJ_FILES)) -o $(SHARED_DIR)/use-shared-library.so
+	gcc -shared $(filter-out $(MAIN_SRC),$(OBJ_FILES)) -o $(SHARED_DIR)/libhello.so
 
 # clean
 clean:

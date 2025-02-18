@@ -3,7 +3,7 @@ Chương trình này minh họa cách tạo tiến trình Zombie và tiến trì
 
 # Yêu cầu
 1. **Tiến trình Zombie:**
-   - Một tiến trình con kết thúc nhưng tiến trình cha không gọi `wait()` để thu hoạch nó.
+   - Một tiến trình con kết thúc nhưng tiến trình cha không gọi `wait()` để thu hồi nó.
    - Quan sát tiến trình zombie bằng lệnh `ps`.
 
 2. **Tiến trình Orphan:**

@@ -49,6 +49,3 @@ Chương trình này minh họa cách tạo tiến trình Zombie và tiến trì
   - Khi một tiến trình cha kết thúc trước tiến trình con, tiến trình con sẽ trở thành orphan.
   - Tiến trình orphan sẽ được hệ thống tự động chuyển giao cho tiến trình `init` hoặc `systemd`, đảm bảo nó không trở thành zombie.
 
-# Kết luận
-Chương trình giúp hiểu cách hệ điều hành Linux quản lý các tiến trình đặc biệt như Zombie và Orphan. Đây là những khái niệm quan trọng trong quản lý tiến trình và hệ điều hành.
-

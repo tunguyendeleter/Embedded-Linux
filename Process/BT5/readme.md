@@ -18,7 +18,7 @@ Chương trình này minh họa cách tạo tiến trình Zombie và tiến trì
 2. **Parent (Tiến trình cha/mẹ):**
    - Tạo hai tiến trình con: `CHILD_1` và `CHILD_2`.
    - Tiến trình cha sẽ tự kết thúc, làm cho `CHILD_2` trở thành tiến trình mồ côi.
-   - `CHILD_1` sẽ trở thành zombie vì cha nó kết thúc nhưng không thu hoạch nó.
+   - `CHILD_1` sẽ trở thành zombie vì cha nó kết thúc nhưng không wait() nó.
 
 3. **CHILD_1 (Tiến trình zombie):**
    - Chạy vô hạn nhưng bị cha giết (`kill`), dẫn đến trạng thái zombie.

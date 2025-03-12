@@ -65,33 +65,12 @@ typedef signed int sint32;
  *****************************************************************************/
 typedef unsigned char bool;
 
-/* === Standard Return Type Definition === */
 /******************************************************************************
  * Typedef name:                    : Std_ReturnType
  * Description:                      : Defines a standard return type using `sint8` for function success/failure.
  *****************************************************************************/
 typedef sint8 Std_ReturnType;
 
-/* === Standard Return Values === */
-/******************************************************************************
- * Macro name:                       : E_OK
- * Description:                       : Standard return value indicating success (0).
- *****************************************************************************/
-#define E_OK (Std_ReturnType)0
-
-/******************************************************************************
- * Macro name:                       : E_NOT_OK
- * Description:                       : Standard return value indicating failure (1).
- *****************************************************************************/
-#define E_NOT_OK (Std_ReturnType)1
-
-/******************************************************************************
- * Macro name:                       : NULL_PTR
- * Description:                       : Defines a null pointer constant for pointer initialization.
- *****************************************************************************/
-#define NULL_PTR ((void *)0)
-
-/* === Host Configuration Structure === */
 /******************************************************************************
  * Structure name:                   : HostConfig_InfoType
  * Description:                       : Stores the host's IP address and port number.
@@ -102,7 +81,6 @@ typedef struct host
     uint16 MyPort;                       /* Port number assigned to the host */
 } HostConfig_InfoType;
 
-/* === Socket Information Structure === */
 /******************************************************************************
  * Structure name:                   : Socket_InfoType
  * Description:                       : Stores information about a socket connection.
@@ -125,5 +103,26 @@ typedef struct socklist
     struct socklist *next;      /* Pointer to the next socket in the list */
     struct socklist *prev;      /* Pointer to the previous socket in the list */
 } SocketList_InfoType;
+
+/******************************************************************************
+ *  DEFINES & MACROS
+ *****************************************************************************/
+/******************************************************************************
+ * Macro name:                       : E_OK
+ * Description:                       : Standard return value indicating success (0).
+ *****************************************************************************/
+#define E_OK (Std_ReturnType)0
+
+/******************************************************************************
+ * Macro name:                       : E_NOT_OK
+ * Description:                       : Standard return value indicating failure (1).
+ *****************************************************************************/
+#define E_NOT_OK (Std_ReturnType)1
+
+/******************************************************************************
+ * Macro name:                       : NULL_PTR
+ * Description:                       : Defines a null pointer constant for pointer initialization.
+ *****************************************************************************/
+#define NULL_PTR ((void *)0)
 
 #endif /* INC_STD_TYPE_H */

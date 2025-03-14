@@ -170,10 +170,12 @@ void Cli_ProcessTerminate(void)
     uint8 message[100];
     sprintf(message, "Port Number: %d", MyHostInfo.MyPort);
 
+    /* Loop for specific socket connection */
     while (lpCurr != NULL)
     {
         if (lpCurr->SocketInfo.Socket_fd == socketId)
         {
+            /* Remove connection */
             Socket_RemoveSocket(socketId);
             close(socketId);
             memset(message, 0, 100);

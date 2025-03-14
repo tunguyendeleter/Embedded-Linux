@@ -25,6 +25,7 @@ Std_ReturnType Safety_CheckInvalidPort(uint32 port)
         Retval = E_NOT_OK;
     }
 
+    /* Check invalid port range */
     if (E_NOT_OK != Retval)
     {
         if (port < MIN_PORT && port > MAX_PORT)

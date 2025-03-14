@@ -13,6 +13,7 @@ void Util_PrintWrappedMessage(uint8 *message)
     int len = strlen(message);
     int start = 0;
 
+    /* Print wrap messge box with fixed size */
     printf("+----------------------------------------------------------------------+\n");
     while (start < len)
     {
@@ -36,10 +37,13 @@ void Util_PrintAnnouceReceiveMessage(sint32 sock_fd)
     int start = 0;
     bool isFound = E_NOT_OK;
 
+    /* Check invalid param */
     if (HeadSockList == NULL_PTR)
     {
         return;
     }
+
+    /* Loop for specific socket connection */
     SocketList_InfoType *lpCurr = HeadSockList;
     while (lpCurr != NULL_PTR)
     {
@@ -51,6 +55,7 @@ void Util_PrintAnnouceReceiveMessage(sint32 sock_fd)
         lpCurr = lpCurr->next;
     }
 
+    /* Print message */
     if (isFound == E_OK)
     {
         printf("\n+----------------------------------------------------------------------+\n");
@@ -78,10 +83,13 @@ void Util_PrintAnnouceConnectMessage(sint32 sock_fd)
     int start;
     bool isFound = E_NOT_OK;
 
+    /* Check invalid param */
     if (HeadSockList == NULL_PTR)
     {
         return;
     }
+
+    /* Loop for specific socket connection */
     SocketList_InfoType *lpCurr = HeadSockList;
     while (lpCurr != NULL_PTR)
     {
@@ -94,6 +102,7 @@ void Util_PrintAnnouceConnectMessage(sint32 sock_fd)
         lpCurr = lpCurr->next;
     }
 
+    /* Print message */
     if (isFound == E_OK)
     {
         len = strlen(messageA);
@@ -130,10 +139,13 @@ void Util_PrintAnnouceDisconnectMessage(sint32 sock_fd)
     int len;
     bool isFound = E_NOT_OK;
 
+    /* Check invalid param */
     if (HeadSockList == NULL_PTR)
     {
         return;
     }
+
+    /* Loop for specific socket connection */
     SocketList_InfoType *lpCurr = HeadSockList;
     while (lpCurr != NULL_PTR)
     {
@@ -145,6 +157,7 @@ void Util_PrintAnnouceDisconnectMessage(sint32 sock_fd)
         lpCurr = lpCurr->next;
     }
 
+    /* Print message */
     if (isFound == E_OK)
     {
         len = strlen(message);
@@ -174,17 +187,21 @@ void Util_PrintListSocket(void)
     int start;
     SocketList_InfoType *lpCurr = HeadSockList;
 
+    /* Check invalid param */
     if (lpCurr == NULL_PTR)
     {
         return;
     }
 
+    /* Print heading message box */
     memset(message, 0, 100);
     sprintf(message, "ID        | Port        | IP        ");
     Util_PrintWrappedMessage(message);
 
+    /* Loop for all socket connection */
     while (lpCurr != NULL_PTR)
     {
+        /* Print all socket information */
         start = 0;
         memset(message, 0, 100);
         sprintf(message, "%-2d        | %-6d      | %-16s     ", lpCurr->SocketInfo.Socket_fd, lpCurr->SocketInfo.Port, lpCurr->SocketInfo.Ip4Address);

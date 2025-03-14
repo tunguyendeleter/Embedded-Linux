@@ -17,7 +17,23 @@
  *****************************************************************************/
 Std_ReturnType Safety_CheckInvalidPort(uint32 port)
 {
-    return (port >= MIN_PORT && port <= MAX_PORT) ? E_OK : E_NOT_OK;
+    Std_ReturnType Retval = E_OK;
+
+    /* Check if port is used by host */
+    if (MyHostInfo.MyPort == port)
+    {
+        Retval = E_NOT_OK;
+    }
+
+    if (E_NOT_OK != Retval)
+    {
+        if (port < MIN_PORT && port > MAX_PORT)
+        {
+            Retval = E_NOT_OK;
+        }
+    }
+
+    return Retval;
 }
 
 /******************************************************************************

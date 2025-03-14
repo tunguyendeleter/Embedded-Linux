@@ -505,7 +505,6 @@ void Socket_GetPeerIpPort(sint32 sockfd)
 
     /* Convert binary IP to human-readable format */
     inet_ntop(AF_INET, &addr.sin_addr, server_ip, INET_ADDRSTRLEN);
-    printf("Connected to Server IP: %s, Port: %d\n", server_ip, ntohs(addr.sin_port));
 
     /* Add client to linked list */
     Socket_UpdateSocket(server_ip, ntohs(addr.sin_port), sockfd);
@@ -522,64 +521,81 @@ void Socket_GetPeerIpPort(sint32 sockfd)
  *****************************************************************************/
 Std_ReturnType Socket_ClientConnect(sint8 *ip, sint32 port)
 {
-    /* Allocate memory for socket descriptor */
     sint32 *sockfd = malloc(sizeof(int));
     struct sockaddr_in Server_Info;
-    if (!sockfd)
+    Std_ReturnType Retval = E_OK;
+
+    Retval = Safety_CheckInvalidPort(port);
+
+    if (E_NOT_OK != Retval)
     {
-        perror("Memory allocation failed");
-        return E_NOT_OK;
-    }
-    printf("Connecting to IP = %s, Port = %d\n", ip, port);
+        /* Allocate memory for socket descriptor */
+        if (!sockfd)
+        {
+            perror("[ERROR] Memory allocation failed");
+            Retval = E_NOT_OK;
+        }
+        else
+        {
+            printf("[INFO] Connecting to IP = %s, Port = %d\n", ip, port);
+        }
 
-    /* Create socket */
-    *sockfd = socket(AF_INET, SOCK_STREAM, 0);
-    if (*sockfd == -1)
+        /* Create socket */
+        *sockfd = socket(AF_INET, SOCK_STREAM, 0);
+        if (*sockfd == -1)
+        {
+            perror("[ERROR] Socket creation failed");
+            free(sockfd);
+            Retval = E_NOT_OK;
+        }
+
+        /* Configure server address */
+        Server_Info.sin_family = AF_INET;
+        Server_Info.sin_port = htons(port);
+
+        /* Convert IP address */
+        if (inet_pton(AF_INET, ip, &Server_Info.sin_addr) <= 0)
+        {
+            perror("[ERROR] Invalid address");
+            close(*sockfd);
+            free(sockfd);
+            Retval = E_NOT_OK;
+        }
+
+        /* Connect to the server */
+        if (connect(*sockfd, (struct sockaddr *)&Server_Info, sizeof(Server_Info)) < 0)
+        {
+            perror("[ERROR] Connection failed");
+            close(*sockfd);
+            free(sockfd);
+            Retval = E_NOT_OK;
+        }
+        else
+        {
+            printf("[INFO] Connected successfully to %s:%d\n", ip, port);
+        }
+
+        /* Get port and ip the actual server IP */
+        Socket_GetPeerIpPort(*sockfd);
+
+        /* Create a thread to handle this client */
+        pthread_t thread;
+        if (pthread_create(&thread, NULL, Socket_ClientHandler, sockfd) != 0)
+        {
+            perror("[ERROR] Failed to create client handler thread");
+            close(*sockfd);
+            free(sockfd);
+            Retval = E_NOT_OK;
+        }
+        pthread_detach(thread);
+    }
+
+    if (E_NOT_OK == Retval)
     {
-        perror("Socket creation failed");
-        free(sockfd);
-        return E_NOT_OK;
+        printf("[ERROR] Connection fail\n");
     }
-
-    /* Configure server address */
-    Server_Info.sin_family = AF_INET;
-    Server_Info.sin_port = htons(port);
-
-    /* Convert IP address */
-    if (inet_pton(AF_INET, ip, &Server_Info.sin_addr) <= 0)
-    {
-        perror("Invalid address");
-        close(*sockfd);
-        free(sockfd);
-        return E_NOT_OK;
-    }
-
-    /* Connect to the server */
-    if (connect(*sockfd, (struct sockaddr *)&Server_Info, sizeof(Server_Info)) < 0)
-    {
-        perror("Connection failed");
-        close(*sockfd);
-        free(sockfd);
-        return E_NOT_OK;
-    }
-
-    printf("Connected successfully to %s:%d\n", ip, port);
-
-    /* Get port and ip the actual server IP */
-    Socket_GetPeerIpPort(*sockfd);
-
-    /* Create a thread to handle this client */
-    pthread_t thread;
-    if (pthread_create(&thread, NULL, Socket_ClientHandler, sockfd) != 0)
-    {
-        perror("Failed to create client handler thread");
-        close(*sockfd);
-        free(sockfd);
-        return E_NOT_OK;
-    }
-
-    pthread_detach(thread);
-    return E_OK;
+    
+    return Retval;
 }
 
 /******************************************************************************
